@@ -70,4 +70,4 @@ expected.forEach((film, i) => {
 
 showFilms(results, 150, 20);
 
-fs.writeFileSync('cleanFilms.csv', results.films.join(', '));
+fs.writeFileSync('cleanFilms.csv', results.films.map(pair => pair[0]).join('\n'));
