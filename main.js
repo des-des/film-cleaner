@@ -3,9 +3,10 @@ var fs = require('fs');
 var films = fs.readFileSync('./FilmsDB.csv', 'utf8').toString().split('\n');
 
 var rules = [
-  /\b[\s+]?[-]?[\s+]?THE[\s+]?$/g, // mathes [- THE, THE ...] at end
-  /\*/g, // matches astrisks
-  /\(.*\)/g // matches everthing in brackets
+  /\(.*\)/g, // matches everthing in brackets
+  /\b[\s+]?[-]?[\s+]?THE[\s+]?[-]?$/g, // mathes [- THE, THE ...] at end
+  /\b[\s+]?[-]?[\s+]?AN[\s+]?[-]?$/g, // mathes [- AN, AN ...] at end
+  /\*/g // matches astrisks
 ];
 
 applyRules = function(film) {
@@ -46,7 +47,10 @@ var testFilms = [
   '42ND STREET*',
   '666  PROPHECY  THE',
   '6TH DAY - THE',
-  '8 WOMEN (8 FEMMES)'
+  '8 WOMEN (8 FEMMES)',
+  'AGONY AND THE ECSTASY -THE-',
+  'AMERICAN HAUNTING  AN',
+  'ASSAULT  THE (2010)'
 ];
 
 var expected = [
@@ -55,7 +59,10 @@ var expected = [
   '42ND STREET',
   '666  PROPHECY',
   '6TH DAY',
-  '8 WOMEN '
+  '8 WOMEN ',
+  'AGONY AND THE ECSTASY',
+  'AMERICAN HAUNTING',
+  'ASSAULT'
 ];
 
 var testResult = cleanFilms(testFilms);
@@ -68,6 +75,6 @@ expected.forEach((film, i) => {
   if (film !== testResult.films[i][0]) throw 'fail at ' + film + ' : ' + testResult.films[i][0];
 });
 
-showFilms(results, 150, 20);
+showFilms(results, 930, 30);
 
 fs.writeFileSync('cleanFilms.csv', results.films.map(pair => pair[0]).join('\n'));
