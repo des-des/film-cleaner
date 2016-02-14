@@ -3,14 +3,16 @@ var fs = require('fs');
 var films = fs.readFileSync('./FilmsDB.csv', 'utf8').toString().split('\n');
 
 var rules = [
+  /\d\d\d\d$/g, // 4 digit numbers at end
   /\(.*\)/g, // matches everthing in brackets
   /\*.*\*/g, // matches everthing in astrisks
   /\(.*[\s]?$/g, // matches everthing in brackets or something with one bracket
   /\*/g, // matches astrisks
-  /\b[\s+]?[-]?[\s+]?THE[\s+]?[-]?$/g, // mathes [- THE, THE ...] at end
-  /\b[\s+]?[-]?[\s+]?AN[\s+]?[-]?$/g, // mathes [- AN, AN ...] at end
-  /\b[\s+]?[-]?[\s+]?A[\s+]?[-]?$/g, // mathes [- A, A ...] at end
-  /[\s+]?[-]?[\s+]?$/g // trailing hyphans
+  /\b[\s+]?[-]?[\s+]?THE[\s+]?[-]?[\s+]?$/g, // mathes [- THE, THE ...] at end
+  /\b[\s+]?[-]?[\s+]?AN[\s+]?[-]?[\s+]?$/g, // mathes [- AN, AN ...] at end
+  /\b[\s+]?[-]?[\s+]?A[\s+]?[-]?[\s+]?$/g, // mathes [- A, A ...] at end
+  /\d\d\d\d$/g, // 4 digit numbers at end
+  /[\s+]?[-]?[\s+]?$/g, // trailing hyphans
 ];
 var isShow = function(str) {
   return (
@@ -84,7 +86,10 @@ var testFilms = [
   'EASY COME  EASY GO (1947) (UNI)',
   'FAIL SAFE ***WB***',
   'FRIENDS: COMPLETE SEASON 10',
-  'BABE  -'
+  'BABE  -',
+  'FAIL SAFE 1962',
+  '1984',
+  'DALTONS RIDE AGAIN  THE  1946'
 ];
 
 var expected = [
@@ -105,7 +110,10 @@ var expected = [
   'DUELLISTS',
   'EASY COME  EASY GO',
   'FAIL SAFE',
-  'BABE'
+  'BABE',
+  'FAIL SAFE',
+  '',
+  'DALTONS RIDE AGAIN'
 ];
 
 var testResult = cleanFilms(testFilms);
